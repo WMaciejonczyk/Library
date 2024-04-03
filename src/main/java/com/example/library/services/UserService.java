@@ -2,6 +2,9 @@ package com.example.library.services;
 
 import com.example.library.DTO.UserDTO;
 import com.example.library.DTO.Id;
+import com.example.library.exceptions.EmptyRepositoryException;
+import com.example.library.exceptions.InvalidInputException;
+import com.example.library.exceptions.UserAlreadyExistsException;
 import com.example.library.entities.User;
 import com.example.library.enums.Role;
 import com.example.library.repositories.UserRepository;
@@ -20,16 +23,28 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User addUser(UserDTO userDTO) {
-        User user = mapDTOToUser(userDTO);
-        return userRepository.save(user);
+    public User addUser(UserDTO userDTO) throws UserAlreadyExistsException {
+        if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
+            throw new UserAlreadyExistsException("User with entered username (" + userDTO.getUsername()
+                    + ") already exists.");
+        }
+        else {
+            User user = mapDTOToUser(userDTO);
+            return userRepository.save(user);
+        }
     }
 
-    public Iterable<User> getAllUsers() {
+    public Iterable<User> getAllUsers() throws EmptyRepositoryException {
+        if (userRepository.findAll().isEmpty()) {
+            throw new EmptyRepositoryException("There are not any registered users.");
+        }
         return userRepository.findAll();
     }
 
-    public void deleteUser(Id id) {
+    public void deleteUser(Id id) throws InvalidInputException {
+        if (!userRepository.existsById(id.getId())) {
+            throw new InvalidInputException("There is no user with id: " + id.getId());
+        }
         userRepository.deleteById(id.getId());
     }
 

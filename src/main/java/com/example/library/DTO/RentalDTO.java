@@ -5,17 +5,8 @@ import java.sql.Date;
 public class RentalDTO {
     private Integer bookId;
     private Integer userId;
-    private Date rentDate;
     private Date dueDate;
     private Date returnDate;
-
-    public Date getRentDate() {
-        return rentDate;
-    }
-
-    public void setRentDate(Date rentDate) {
-        this.rentDate = rentDate;
-    }
 
     public Date getDueDate() {
         return dueDate;

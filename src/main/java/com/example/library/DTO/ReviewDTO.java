@@ -1,7 +1,5 @@
 package com.example.library.DTO;
 
-import com.example.library.enums.Rating;
-
 import java.sql.Date;
 
 public class ReviewDTO {
@@ -9,7 +7,6 @@ public class ReviewDTO {
     private Integer bookId;
     private String rating;
     private String comment;
-    private Date reviewDate;
 
     public Integer getUserId() {
         return userId;
@@ -33,14 +30,6 @@ public class ReviewDTO {
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public Date getReviewDate() {
-        return reviewDate;
-    }
-
-    public void setReviewDate(Date reviewDate) {
-        this.reviewDate = reviewDate;
     }
 
     public String getRating() {

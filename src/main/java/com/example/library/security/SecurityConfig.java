@@ -26,7 +26,14 @@ public class SecurityConfig {
                         authorizationManagerRequestMatcherRegistry ->
                                 authorizationManagerRequestMatcherRegistry
                                         .requestMatchers("/login").permitAll()
+                                        .requestMatchers("book/getAll").permitAll()
+                                        .requestMatchers("book/getAllDetails").permitAll()
+                                        .requestMatchers("review/**").permitAll()
+                                        .requestMatchers("rental/**").hasRole("STAFF")
                                         .requestMatchers("/user/**").hasRole("STAFF")
+                                        .requestMatchers("/book/add").hasRole("STAFF")
+                                        .requestMatchers("/book/addDetails").hasRole("STAFF")
+                                        .requestMatchers("/error").anonymous()
                 )
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
