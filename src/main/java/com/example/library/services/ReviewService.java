@@ -11,10 +11,8 @@ import com.example.library.repositories.ReviewRepository;
 import com.example.library.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Arrays;
 
 @Service
 public class ReviewService {

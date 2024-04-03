@@ -1,7 +1,5 @@
 package com.example.library.DTO;
 
-import java.sql.Date;
-
 public class ReviewDTO {
     private Integer userId;
     private Integer bookId;
