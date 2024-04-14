@@ -12,22 +12,48 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+/**
+ * Service for managing user login.
+ * This service provides a method for user login which includes password verification and JWT token generation.
+ */
 @Service
 public class LoginService {
 
+    /**
+     * The repository for accessing users.
+     */
     private final UserRepository userRepository;
 
+    /**
+     * The password encoder for password verification.
+     */
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * The key used for JWT (JSON Web Token) generation.
+     */
     @Value("${jwt.token.key}")
     private String key;
 
+    /**
+     * Constructs a new LoginService with the specified user repository and password encoder.
+     *
+     * @param userRepository the repository for accessing users
+     * @param passwordEncoder the password encoder for password verification
+     */
     @Autowired
     public LoginService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Logs in a user.
+     * This method verifies the user's password and generates a JWT token if the password is correct.
+     *
+     * @param loginForm the form containing the user's login information
+     * @return the JWT token if the password is correct, or null if the password is incorrect
+     */
     public String userLogin(LoginForm loginForm) {
         User user = userRepository.findByUsername(loginForm.getLogin()).get();
         String password = user.getPassword();

@@ -14,12 +14,35 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.time.LocalDate;
 
+/**
+ * Service for managing reviews.
+ * This service provides methods for adding and retrieving reviews.
+ */
 @Service
 public class ReviewService {
+
+    /**
+     * The repository for accessing reviews.
+     */
     private final ReviewRepository reviewRepository;
+
+    /**
+     * The repository for accessing users.
+     */
     private final UserRepository userRepository;
+
+    /**
+     * The repository for accessing books.
+     */
     private final BookRepository bookRepository;
 
+    /**
+     * Constructs a new ReviewService with the specified repositories.
+     *
+     * @param reviewRepository the repository for accessing reviews
+     * @param userRepository the repository for accessing users
+     * @param bookRepository the repository for accessing books
+     */
     @Autowired
     public ReviewService(ReviewRepository reviewRepository, UserRepository userRepository, BookRepository bookRepository) {
         this.reviewRepository = reviewRepository;
@@ -27,7 +50,14 @@ public class ReviewService {
         this.bookRepository = bookRepository;
     }
 
-    public Review addReview(ReviewDTO reviewDTO) throws Exception {
+    /**
+     * Adds a new review.
+     *
+     * @param reviewDTO the DTO of the review to add
+     * @return the added review
+     * @throws InvalidInputException if the input is invalid
+     */
+    public Review addReview(ReviewDTO reviewDTO) throws InvalidInputException {
         if (!userRepository.existsById(reviewDTO.getUserId())) {
             throw new InvalidInputException("There is no user with entered id.");
         }
@@ -38,6 +68,12 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
+    /**
+     * Retrieves all reviews.
+     *
+     * @return all reviews
+     * @throws EmptyRepositoryException if the repository is empty
+     */
     public Iterable<Review> getAllReviews() throws EmptyRepositoryException {
         if (reviewRepository.findAll().isEmpty()) {
             throw new EmptyRepositoryException("There are not any registered reviews.");
@@ -45,6 +81,12 @@ public class ReviewService {
         return reviewRepository.findAll();
     }
 
+    /**
+     * Maps a ReviewDTO to a Review entity.
+     *
+     * @param reviewDTO the DTO to map
+     * @return the mapped Review entity
+     */
     private Review mapDTOToReview(ReviewDTO reviewDTO) {
         var review = new Review();
         review.setUserReviews(userRepository.findById(reviewDTO.getUserId()).get());
