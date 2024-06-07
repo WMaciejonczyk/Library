@@ -1,6 +1,7 @@
 package com.example.library.controllers;
 
 import com.example.library.DTO.RentalDTO;
+import com.example.library.DTO.RentalResponseDTO;
 import com.example.library.entities.Rental;
 import com.example.library.exceptions.EmptyRepositoryException;
 import com.example.library.exceptions.InvalidInputException;
@@ -68,7 +69,7 @@ public class RentalController {
      */
     @GetMapping("/getAll")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public @ResponseBody Iterable<Rental> getAllRentals() throws ResponseStatusException {
+    public @ResponseBody Iterable<RentalResponseDTO> getAllRentals() throws ResponseStatusException {
         try {
             return rentalService.getAllRentals();
         } catch (EmptyRepositoryException e) {

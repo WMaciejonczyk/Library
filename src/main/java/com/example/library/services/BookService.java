@@ -2,6 +2,7 @@ package com.example.library.services;
 
 import com.example.library.DTO.BookDTO;
 import com.example.library.DTO.BookDetailsDTO;
+import com.example.library.DTO.BookDetailsResponseDTO;
 import com.example.library.entities.Book;
 import com.example.library.entities.BookDetails;
 import com.example.library.exceptions.EmptyRepositoryException;
@@ -12,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -204,11 +206,16 @@ public class BookService {
      * @return all book details
      * @throws EmptyRepositoryException if the repository is empty
      */
-    public Iterable<BookDetails> getAllBookDetails() throws EmptyRepositoryException {
+    public Iterable<BookDetailsResponseDTO> getAllBookDetails() throws EmptyRepositoryException {
         if (bookDetailsRepository.findAll().isEmpty()) {
             throw new EmptyRepositoryException("There are not any registered book details.");
         }
-        return bookDetailsRepository.findAll();
+        Iterable<BookDetails> bookDetails = bookDetailsRepository.findAll();
+        List<BookDetailsResponseDTO> bookDetailsDTOs = new ArrayList<>();
+        for (BookDetails bookDetail : bookDetails) {
+            bookDetailsDTOs.add(mapBookDetailsToDTO(bookDetail));
+        }
+        return bookDetailsDTOs;
     }
 
     /**
@@ -224,5 +231,15 @@ public class BookService {
         bookDetails.setDescription(bookDetailsDTO.getDescription());
         bookDetails.setCoverImageURL(bookDetailsDTO.getCoverImageURL());
         return bookDetails;
+    }
+
+    private BookDetailsResponseDTO mapBookDetailsToDTO(BookDetails bookDetails) {
+        var bookDetailsDTO = new BookDetailsResponseDTO();
+        bookDetailsDTO.setId(bookDetails.getId());
+        bookDetailsDTO.setGenre(bookDetails.getGenre());
+        bookDetailsDTO.setDescription(bookDetails.getDescription());
+        bookDetailsDTO.setCoverImageURL(bookDetails.getCoverImageURL());
+        bookDetailsDTO.setBookId(bookDetails.getBookDetails().getId());
+        return bookDetailsDTO;
     }
 }

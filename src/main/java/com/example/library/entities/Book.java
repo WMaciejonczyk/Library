@@ -25,6 +25,7 @@ public class Book {
     @JsonIgnore
     @OneToMany(mappedBy = "bookReviews", cascade = CascadeType.ALL)
     private List<Review> review;
+    @JsonIgnore
     @OneToOne(mappedBy = "bookDetails")
     private BookDetails bookDetails;
 

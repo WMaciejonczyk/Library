@@ -1,6 +1,7 @@
 package com.example.library.controllers;
 
 import com.example.library.DTO.ReviewDTO;
+import com.example.library.DTO.ReviewResponseDTO;
 import com.example.library.entities.Review;
 import com.example.library.exceptions.EmptyRepositoryException;
 import com.example.library.exceptions.InvalidInputException;
@@ -53,7 +54,7 @@ public class ReviewController {
      */
     @GetMapping("/getAll")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public @ResponseBody Iterable<Review> getAllReviews() throws ResponseStatusException {
+    public @ResponseBody Iterable<ReviewResponseDTO> getAllReviews() throws ResponseStatusException {
         try {
             return reviewService.getAllReviews();
         } catch (EmptyRepositoryException e) {

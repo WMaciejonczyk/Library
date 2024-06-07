@@ -1,6 +1,7 @@
 package com.example.library.services;
 
 import com.example.library.DTO.RentalDTO;
+import com.example.library.DTO.RentalResponseDTO;
 import com.example.library.entities.Book;
 import com.example.library.entities.Rental;
 import com.example.library.entities.User;
@@ -15,6 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Service for managing rentals.
@@ -106,11 +109,16 @@ public class RentalService {
      * @return all rentals
      * @throws EmptyRepositoryException if the repository is empty
      */
-    public Iterable<Rental> getAllRentals() throws EmptyRepositoryException {
+    public Iterable<RentalResponseDTO> getAllRentals() throws EmptyRepositoryException {
         if (rentalRepository.findAll().isEmpty()) {
             throw new EmptyRepositoryException("There are not any registered rentals.");
         }
-        return rentalRepository.findAll();
+        Iterable<Rental> rentals = rentalRepository.findAll();
+        List<RentalResponseDTO> rentalDTOs = new ArrayList<>();
+        for (Rental rental : rentals) {
+            rentalDTOs.add(mapRentalToDTO(rental));
+        }
+        return rentalDTOs;
     }
 
     /**
@@ -146,5 +154,16 @@ public class RentalService {
         rental.setDueDate(rentalDTO.getDueDate());
         rental.setReturnDate(null);
         return rental;
+    }
+
+    private RentalResponseDTO mapRentalToDTO(Rental rental) {
+        var rentalDTO = new RentalResponseDTO();
+        rentalDTO.setId(rental.getId());
+        rentalDTO.setDueDate(rental.getDueDate());
+        rentalDTO.setRentDate(rental.getRentDate());
+        rentalDTO.setReturnDate(rental.getReturnDate());
+        rentalDTO.setBookId(rental.getBookRentals().getId());
+        rentalDTO.setUserId(rental.getUserRentals().getId());
+        return rentalDTO;
     }
 }

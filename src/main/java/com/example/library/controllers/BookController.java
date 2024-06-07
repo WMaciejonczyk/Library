@@ -2,6 +2,7 @@ package com.example.library.controllers;
 
 import com.example.library.DTO.BookDTO;
 import com.example.library.DTO.BookDetailsDTO;
+import com.example.library.DTO.BookDetailsResponseDTO;
 import com.example.library.entities.Book;
 import com.example.library.entities.BookDetails;
 import com.example.library.exceptions.EmptyRepositoryException;
@@ -183,7 +184,7 @@ public class BookController {
      */
     @GetMapping("/getAllDetails")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public @ResponseBody Iterable<BookDetails> getAllBookDetails() throws ResponseStatusException {
+    public @ResponseBody Iterable<BookDetailsResponseDTO> getAllBookDetails() throws ResponseStatusException {
         try {
         return bookService.getAllBookDetails();
         } catch (EmptyRepositoryException e) {
