@@ -106,7 +106,7 @@ public class BookController {
      */
     @GetMapping("/getByIsbn")
     @ResponseStatus(code = HttpStatus.OK)
-    public @ResponseBody Book getBookByIsbn(@RequestParam("isbn") String isbn) throws ResponseStatusException {
+    public @ResponseBody Iterable<Book> getBookByIsbn(@RequestParam("isbn") String isbn) throws ResponseStatusException {
         try {
             return bookService.getBookByIsbn(isbn);
         } catch (InvalidInputException e) {
@@ -123,7 +123,7 @@ public class BookController {
      */
     @GetMapping("/getByTitle")
     @ResponseStatus(code = HttpStatus.OK)
-    public @ResponseBody Book getBookByTitle(@RequestParam("title") String title) throws ResponseStatusException {
+    public @ResponseBody Iterable<Book> getBookByTitle(@RequestParam("title") String title) throws ResponseStatusException {
         try {
             return bookService.getBookByTitle(title);
         } catch (InvalidInputException e) {

@@ -127,7 +127,7 @@ public class RentalService {
      * @return rentals of a user
      * @throws EmptyRepositoryException if the repository is empty
      */
-    public Iterable<Rental> getUserRentals() throws EmptyRepositoryException {
+    public Iterable<RentalResponseDTO> getUserRentals() throws EmptyRepositoryException {
         if (rentalRepository.findAll().isEmpty()) {
             throw new EmptyRepositoryException("There are not any registered rentals.");
         }
@@ -137,7 +137,12 @@ public class RentalService {
         if (rentalRepository.findAllByUser(user).isEmpty()) {
             throw new EmptyRepositoryException("There are not any registered rentals by you.");
         }
-        return rentalRepository.findAllByUser(user);
+        Iterable<Rental> rentals = rentalRepository.findAllByUser(user);
+        List<RentalResponseDTO> rentalDTOs = new ArrayList<>();
+        for (Rental rental : rentals) {
+            rentalDTOs.add(mapRentalToDTO(rental));
+        }
+        return rentalDTOs;
     }
 
     /**

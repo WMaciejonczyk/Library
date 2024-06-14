@@ -30,6 +30,7 @@ public class Rental {
     /**
      * The user associated with this rental.
      */
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private User userRentals;

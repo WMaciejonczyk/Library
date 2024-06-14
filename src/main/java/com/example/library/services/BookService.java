@@ -122,15 +122,13 @@ public class BookService {
      * @return the book with the specified ISBN
      * @throws InvalidInputException if the input is invalid
      */
-    public Book getBookByIsbn(String isbn) throws InvalidInputException {
+    public Iterable<Book> getBookByIsbn(String isbn) throws InvalidInputException {
         if (bookRepository.findAll().stream().noneMatch(book -> book.getIsbn().equals(isbn))) {
             throw new InvalidInputException("There is not a book with this isbn.");
         }
-        Book book = bookRepository.findAll().stream()
+        return bookRepository.findAll().stream()
                 .filter(book1 -> book1.getIsbn().equals(isbn))
-                .toList().get(0);
-        book.setBookRentals(null);
-        return book;
+                .toList();
     }
 
     /**
@@ -140,15 +138,14 @@ public class BookService {
      * @return the book with the specified title
      * @throws InvalidInputException if the input is invalid
      */
-    public Book getBookByTitle(String title) throws InvalidInputException {
-        if (bookRepository.findAll().stream().noneMatch(book -> book.getIsbn().equals(title))) {
+    public Iterable<Book> getBookByTitle(String title) throws InvalidInputException {
+        if (bookRepository.findAll().stream().noneMatch(book -> book.getTitle().equals(title))) {
+            System.out.println("brak");
             throw new InvalidInputException("There is not a book with this title.");
         }
-        Book book = bookRepository.findAll().stream()
-                .filter(book1 -> book1.getIsbn().equals(title))
-                .toList().get(0);
-        book.setBookRentals(null);
-        return book;
+        return bookRepository.findAll().stream()
+                .filter(book1 -> book1.getTitle().equals(title))
+                .toList();
     }
 
     /**
